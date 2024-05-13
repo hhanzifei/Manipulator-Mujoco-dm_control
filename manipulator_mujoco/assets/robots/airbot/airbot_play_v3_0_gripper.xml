@@ -1,0 +1,55 @@
+<mujoco model="airbot_play_v3_0_gripper">
+    <compiler angle="radian" meshdir="/home/hanjiang/sutdy/discover_arm/urdf_model/airbot_play_v3_0/airbot_play_v3_0_gripper/meshes/" />
+    <size njmax="500" nconmax="100" />
+    <asset>
+        <mesh name="base_link" file="base_link.STL" />
+        <mesh name="link1" file="link1.STL" />
+        <mesh name="link2" file="link2.STL" />
+        <mesh name="link3" file="link3.STL" />
+        <mesh name="link4" file="link4.STL" />
+        <mesh name="link5" file="link5.STL" />
+        <mesh name="link6" file="link6.STL" />
+    </asset>
+    <worldbody>
+        <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" />
+        <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="base_link" />
+        <body name="link1" pos="0 0 0.1172">
+            <inertial pos="6.9854e-05 -0.0018033 -0.0040245" quat="0.714263 0.698988 0.0237953 -0.0260401" mass="0.5571" diaginertia="0.0003648 0.000344825 0.000294376" />
+            <joint name="joint1" pos="0 0 0" axis="0 0 1" limited="true" range="-3.14 2.09" />
+            <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.89804 0.91765 0.92941 1" mesh="link1" />
+            <geom type="mesh" rgba="0.89804 0.91765 0.92941 1" mesh="link1" />
+            <body name="link2" pos="0 0 0" quat="0.135866 0.135867 -0.69393 0.693932">
+                <inertial pos="0.22493 0.0047721 0.008023" quat="0.298115 0.596337 0.297303 0.683462" mass="0.64621" diaginertia="0.00516535 0.00505042 0.000418626" />
+                <joint name="joint2" pos="0 0 0" axis="0 0 1" limited="true" range="-2.96 0.17" />
+                <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.75294 0.75294 0.75294 1" mesh="link2" />
+                <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="link2" />
+                <body name="link3" pos="0.27009 0 0" quat="0.55806 0 0 0.8298">
+                    <inertial pos="-0.00037204 0.16316 0.0024748" quat="0.694601 0.719377 -0.00121456 0.00500828" mass="0.28804" diaginertia="0.00261618 0.00255446 0.000219265" />
+                    <joint name="joint3" pos="0 0 0" axis="0 0 1" limited="true" range="-0.087 3.14" />
+                    <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.75294 0.75294 0.75294 1" mesh="link3" />
+                    <geom type="mesh" rgba="0.75294 0.75294 0.75294 1" mesh="link3" />
+                    <body name="link4" pos="0 0.30854 0" quat="0.499998 -0.5 -0.5 -0.500002">
+                        <inertial pos="5.2436e-06 0.00040412 -0.03228" quat="0.706226 0.0121253 0.00732967 0.707845" mass="0.34876" diaginertia="0.00505892 0.00498531 0.000346573" />
+                        <joint name="joint4" pos="0 0 0" axis="0 0 1" limited="true" range="-2.96 2.96" />
+                        <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1" mesh="link4" />
+                        <geom type="mesh" rgba="1 1 1 1" mesh="link4" />
+                        <body name="link5" pos="0 0 0" quat="0.707105 0.707108 0 0">
+                            <inertial pos="8.333e-06 0.026148 0.002525" quat="0.659447 0.751751 0 0" mass="0.36132" diaginertia="0.0004677 0.000432922 0.000178178" />
+                            <joint name="joint5" pos="0 0 0" axis="0 0 1" limited="true" range="-1.74 1.74" />
+                            <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.89804 0.91765 0.92941 1" mesh="link5" />
+                            <geom type="mesh" rgba="0.89804 0.91765 0.92941 1" mesh="link5" />
+                            <body name="link6" pos="0 0.26145 0" quat="0.707105 -0.707108 0 0">
+                                <inertial pos="1.9522e-06 -0.002582 -0.13382" quat="0.971225 0.238158 -0.00132359 0.000401994" mass="0.65361" diaginertia="0.00295611 0.00264466 0.00205704" />
+                                <joint name="joint6" pos="0 0 0" axis="0 0 1" limited="true" range="-3.14 3.14" />
+                                <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.69804 0.69804 0.69804 1" mesh="link6" />
+                                <geom type="mesh" rgba="0.69804 0.69804 0.69804 1" mesh="link6" />
+                                <site name="attachment_site" pos="0 0 0" quat="1 0 0 0"/>
+                                <site name="eef_site" pos="0 0 0.05" quat="0 0.7071068 -0.7071068 0"/>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+</mujoco>
