@@ -6,13 +6,14 @@ import mujoco.viewer
 import gymnasium as gym
 from gymnasium import spaces
 from manipulator_mujoco.arenas import StandardArena
-from manipulator_mujoco.robots import Arm
-from manipulator_mujoco.robots import AirBot, AG95
+from manipulator_mujoco.robots import AirBotArm
+from manipulator_mujoco.props import Primitive_box_1, Primitive_box_2  # 盒子属性
 from manipulator_mujoco.mocaps import Target
 from manipulator_mujoco.controllers import OperationalSpaceController
 
 
 class AirBotEnv(gym.Env):
+
     metadata = {
         "render_modes": ["human", "rgb_array"],
         "render_fps": None,
@@ -42,15 +43,34 @@ class AirBotEnv(gym.Env):
         # mocap target that OSC will try to follow
         self._target = Target(self._arena.mjcf_model)
 
-        # ur5e arm
-        self._arm = AirBot()
+        # airbot arm
+        self._arm = AirBotArm()
 
-        self._gripper = AG95()
-        self._arm.attach_tool(self._gripper.mjcf_model, pos=[0, 0, 0], quat=[0, 0, 0, 1])  # 加抓位置
+        # small box to be manipulated
+        self._box_1 = Primitive_box_1(name_body="box_1", pos_body=[0.1, 0.5, 0.5],  # body
+                              diaginertia=[0.002, 0.002, 0.002],  # inertia
+                              condim="4", type_geom="box", name_geom="box_geom_1", quat_geom=[0, 0, 0, 1],  # geom
+                              mass_geom=0.01, size_geom=[0.02, 0.02, 0.02], rgba_geom=[1, 0.5, 0, 1],  # geom
+                              friction=[1, 0.005, 0.0001], solimp=[2, 1, 0.01], solref=[0.01, 1])  # geom
+
+        self._box_2 = Primitive_box_2(name_body="box_2", pos_body=[0.1, 0.43, 0.5],  # body
+                              diaginertia=[0.002, 0.002, 0.002],  # inertia
+                              condim="4", type_geom="box", name_geom="box_geom_2", quat_geom=[0.7, 0, 0, 1],  # geom
+                              mass_geom=0.01, size_geom=[0.02, 0.02, 0.02], rgba_geom=[0.3, 0.5, 0.7, 1],  # geom
+                              friction=[1, 0.005, 0.0001], solimp=[2, 1, 0.01], solref=[0.01, 1])  # geom
+
+        # attach box to arena as free joint
+        self._arena.attach_free(
+            self._box_1.mjcf_model   # 盒子1加载
+        )
+
+        self._arena.attach_free(
+            self._box_2.mjcf_model  # 盒子2加载
+        )
 
         # attach arm to arena
         self._arena.attach(
-            self._arm.mjcf_model, pos=[0, 0, 0], quat=[0, 0, 0, 1]
+            self._arm.mjcf_model, pos=[0, 0, 0], quat=[0, 0, 0, 1]  # 臂基座位置
         )
 
         # generate model
@@ -65,7 +85,7 @@ class AirBotEnv(gym.Env):
             max_effort=150.0,
             kp=200,
             ko=200,
-            kv=30,
+            kv=50,
             vmax_xyz=1.0,
             vmax_abg=2.0,
         )
@@ -89,9 +109,16 @@ class AirBotEnv(gym.Env):
         # reset physics
         with self._physics.reset_context():
             # put arm in a reasonable starting position
-            self._physics.bind(self._arm.joints).qpos = [0,0,0,0,0,0]  # TODO door
+            self._physics.bind(self._arm.joints).qpos = [0,
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         0]
             # put target in a reasonable starting position
-            self._target.set_mocap_pose(self._physics, position=[-0.55, 0.16, 0.6], quaternion=[0, 0, 0, 1])
+            self._target.set_mocap_pose(self._physics, position=[-0.265, 0.16, 0.6], quaternion=[0, 1, 0, 1])  # quaternion=[0, 1, 0, 1]
 
         observation = self._get_obs()
         info = self._get_info()

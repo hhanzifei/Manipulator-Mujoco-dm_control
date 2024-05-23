@@ -27,7 +27,11 @@ class StandardArena(object):
             texrepeat=[5, 5],
             reflectance=0.2,
         )
-        self._mjcf_model.worldbody.add("geom", type="plane", size=[2, 2, 0.1], material=grid)
+
+        # 向 MuJoCo 模型的世界部分添加一个尺寸为 2 x 2 x 0.1 的平面几何体，并使用了一个名为 grid 的材质
+        # self._mjcf_model.worldbody.add("geom", type="plane", size=[2, 2, 0.1], material=grid)
+
+        # Set light
         for x in [-2, 2]:
             # TODO randomize lighting?
             self._mjcf_model.worldbody.add("light", pos=[x, -1, 3], dir=[-x, 1, -2])
@@ -74,3 +78,7 @@ class StandardArena(object):
             The MJCF model.
         """
         return self._mjcf_model
+
+
+
+
