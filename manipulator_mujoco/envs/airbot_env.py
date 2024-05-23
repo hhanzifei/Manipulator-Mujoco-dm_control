@@ -7,6 +7,7 @@ import gymnasium as gym
 from gymnasium import spaces
 from manipulator_mujoco.arenas import StandardArena
 from manipulator_mujoco.robots import Arm
+from manipulator_mujoco.robots import AirBot, AG95
 from manipulator_mujoco.mocaps import Target
 from manipulator_mujoco.controllers import OperationalSpaceController
 
@@ -42,14 +43,10 @@ class AirBotEnv(gym.Env):
         self._target = Target(self._arena.mjcf_model)
 
         # ur5e arm
-        self._arm = Arm(
-            xml_path=os.path.join(
-                os.path.dirname(__file__),
-                '../assets/robots/airbot/airbot_play_v3_0_gripper.xml',
-            ),
-            eef_site_name='eef_site',
-            attachment_site_name='attachment_site'
-        )
+        self._arm = AirBot()
+
+        self._gripper = AG95()
+        self._arm.attach_tool(self._gripper.mjcf_model, pos=[0, 0, 0], quat=[0, 0, 0, 1])  # 加抓位置
 
         # attach arm to arena
         self._arena.attach(
@@ -68,7 +65,7 @@ class AirBotEnv(gym.Env):
             max_effort=150.0,
             kp=200,
             ko=200,
-            kv=50,
+            kv=30,
             vmax_xyz=1.0,
             vmax_abg=2.0,
         )
@@ -92,9 +89,9 @@ class AirBotEnv(gym.Env):
         # reset physics
         with self._physics.reset_context():
             # put arm in a reasonable starting position
-            self._physics.bind(self._arm.joints).qpos = [0,0,0,0,0,0]
+            self._physics.bind(self._arm.joints).qpos = [0,0,0,0,0,0]  # TODO door
             # put target in a reasonable starting position
-            self._target.set_mocap_pose(self._physics, position=[-0.5, 0, 0.3], quaternion=[0, 0, 0, 1])
+            self._target.set_mocap_pose(self._physics, position=[-0.55, 0.16, 0.6], quaternion=[0, 0, 0, 1])
 
         observation = self._get_obs()
         info = self._get_info()

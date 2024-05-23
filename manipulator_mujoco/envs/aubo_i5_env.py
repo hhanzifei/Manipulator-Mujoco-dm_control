@@ -44,14 +44,8 @@ class AuboI5Env(gym.Env):
         # aubo i5 arm
         self._arm = AuboI5()
 
-        # ag95 gripper
-        self._gripper = AG95()
-
-        # attach gripper to arm
-        self._arm.attach_tool(self._gripper.mjcf_model, pos=[0, 0, 0], quat=[0, 0, 0, 1])  # 加抓位置
-
         # small box to be manipulated
-        self._box = Primitive(type="box", size=[0.02, 0.02, 0.02], pos=[0,0,0.02], rgba=[1, 0, 0, 1], friction=[1, 0.3, 0.0001])  # 盒子属性
+        self._box = Primitive(type="box", size=[0.02, 0.02, 0.02], pos=[0,0,0.02], rgba=[1, 0, 0, 1], friction=[1, 0.3, 0.0001])  # 实体盒子属性
 
         # attach arm to arena
         self._arena.attach(
@@ -73,8 +67,8 @@ class AuboI5Env(gym.Env):
             eef_site=self._arm.eef_site,
             min_effort=-150.0,
             max_effort=150.0,
-            kp=300,
-            ko=300,
+            kp=200,
+            ko=200,
             kv=30,
             vmax_xyz=1.0,
             vmax_abg=2.0,
@@ -101,7 +95,7 @@ class AuboI5Env(gym.Env):
             # put arm in a reasonable starting position
             self._physics.bind(self._arm.joints).qpos = [0, 0, 1.5707, 0, 1.5707, 0]
             # put target in a reasonable starting position
-            self._target.set_mocap_pose(self._physics, position=[0.5, 0, 0.0], quaternion=[0, 0, 0, 1])
+            self._target.set_mocap_pose(self._physics, position=[0.5, 0, 0.2], quaternion=[0, 0, 0, 1])
 
         observation = self._get_obs()
         info = self._get_info()
