@@ -1,4 +1,4 @@
-<mujoco model="ur5e scene">
+<mujoco model="aubo_i5 scene">
 
     <include file="aubo_i5.xml"/>
   

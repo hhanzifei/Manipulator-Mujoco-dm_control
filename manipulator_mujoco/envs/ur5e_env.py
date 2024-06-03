@@ -45,7 +45,8 @@ class UR5eEnv(gym.Env):
         self._arm = Arm(
             xml_path= os.path.join(
                 os.path.dirname(__file__),
-                '../assets/robots/ur5e/ur5e.xml',
+                # '../assets/robots/ur5e/ur5e.xml',
+                '../assets/robots/ur5e/scene.xml',
             ),
             eef_site_name='eef_site',
             attachment_site_name='attachment_site'

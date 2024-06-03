@@ -1,3 +1,4 @@
+# Airbot with gripper
 import gymnasium
 import manipulator_mujoco
 

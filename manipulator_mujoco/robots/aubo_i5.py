@@ -3,7 +3,8 @@ from manipulator_mujoco.robots.arm import Arm
 
 _AUBOI5_XML = os.path.join(
     os.path.dirname(__file__),
-    '../assets/robots/aubo_i5/aubo_i5.xml',
+    # '../assets/robots/aubo_i5/aubo_i5.xml',
+    '../assets/robots/aubo_i5/scene.xml',
 )
 
 _JOINTS = (
